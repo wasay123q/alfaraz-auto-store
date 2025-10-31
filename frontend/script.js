@@ -2,7 +2,7 @@
 // Alfaraz Auto Spare Parts - Main Script
 // ===============================
 
-const API_BASE_URL = "http://localhost:4000";
+const API_BASE_URL = "https://alfaraz-auto-api.onrender.com";
 
 // ===== Global variables for Shop/Cart =====
 let cart = JSON.parse(localStorage.getItem("cart") || "[]");
