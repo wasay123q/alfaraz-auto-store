@@ -2,6 +2,7 @@
 // Alfaraz Auto Spare Parts - Main Script
 // ===============================
 
+// FIX 1: Set the API_BASE_URL to your live Render backend
 const API_BASE_URL = "https://alfaraz-auto-api.onrender.com";
 
 // ===== Global variables for Shop/Cart =====
@@ -18,20 +19,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // --- SIGNUP PAGE ---
   if (document.getElementById("signupForm")) {
-    document
-      .getElementById("signupForm")
-      .addEventListener("submit", handleSignup);
+    document.getElementById("signupForm").addEventListener("submit", handleSignup);
   }
 
   // --- LOGIN PAGE ---
   if (document.getElementById("loginTabs")) {
     setupLoginTabs();
-    document
-      .getElementById("userForm")
-      .addEventListener("submit", handleUserLogin);
-    document
-      .getElementById("adminForm")
-      .addEventListener("submit", handleAdminLogin);
+    document.getElementById("userForm").addEventListener("submit", handleUserLogin);
+    document.getElementById("adminForm").addEventListener("submit", handleAdminLogin);
   }
 
   // --- SHOP PAGE ---
@@ -42,9 +37,7 @@ window.addEventListener("DOMContentLoaded", () => {
   // --- CART PAGE ---
   if (document.getElementById("cartItems")) {
     renderCart();
-    document
-      .getElementById("checkoutBtn")
-      .addEventListener("click", handleCheckout);
+    document.getElementById("checkoutBtn").addEventListener("click", handleCheckout);
   }
 
   // --- ADMIN DASHBOARD ---
@@ -57,9 +50,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     loadAdminParts();
     loadAdminOrders();
-    document
-      .getElementById("addPartForm")
-      .addEventListener("submit", handleAddPart);
+    document.getElementById("addPartForm").addEventListener("submit", handleAddPart);
   }
 });
 
@@ -75,8 +66,7 @@ async function handleSignup(e) {
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) return alert("Please enter a valid email.");
-  if (password.length < 8)
-    return alert("Password must be at least 8 characters.");
+  if (password.length < 8) return alert("Password must be at least 8 characters.");
 
   try {
     const res = await fetch(`${API_BASE_URL}/user/signup`, {
@@ -90,7 +80,8 @@ async function handleSignup(e) {
       alert(data.message);
       window.location.href = "login.html";
     }
-  } catch {
+  } catch (err) {
+    console.error(err);
     alert("Error connecting to server");
   }
 }
@@ -113,7 +104,8 @@ async function handleUserLogin(e) {
       localStorage.setItem("userId", data.userId);
       window.location.href = "shop.html";
     }
-  } catch {
+  } catch (err) {
+    console.error(err);
     alert("Error connecting to server");
   }
 }
@@ -136,7 +128,8 @@ async function handleAdminLogin(e) {
       localStorage.setItem("adminLoggedIn", "true");
       window.location.href = "dashboard.html";
     }
-  } catch {
+  } catch (err) {
+    console.error(err);
     alert("Error connecting to server");
   }
 }
@@ -172,32 +165,28 @@ async function fetchParts() {
     const parts = await res.json();
     const partsDiv = document.getElementById("parts");
 
-    // Clear any previous content or loading message
     partsDiv.innerHTML = "";
-
-    // 1. Create a "holding pen" for our new elements
     const fragment = document.createDocumentFragment();
 
     parts.forEach((p) => {
       const col = document.createElement("div");
-      col.className = "col-md-3 mb-4"; // Bootstrap grid column
+      col.className = "col-md-3 mb-4";
 
-      // Create product card
+      const priceAsNumber = parseFloat(p.price);
+
       col.innerHTML = `
         <div class="glass-card text-center d-flex flex-column p-4">
           <h5 class="shop-card-title">${p.name}</h5>
           <div class="mt-auto">
             <p class="shop-card-text shop-card-text-price mb-1">
-              Price: $${p.price.toFixed(2)}
+              Price: $${priceAsNumber.toFixed(2)}
             </p>
             <p class="shop-card-text shop-card-text-stock mb-3">
               Stock: ${p.quantity}
             </p>
             <button
               class="btn btn-glass btn-glass-primary w-100"
-              onclick="addToCart(${p.id}, '${p.name}', ${p.price}, ${
-        p.quantity
-      })"
+              onclick="addToCart(${p.id}, '${p.name}', ${priceAsNumber}, ${p.quantity})"
             >
               Add to Cart
             </button>
@@ -205,13 +194,12 @@ async function fetchParts() {
         </div>
       `;
 
-      // 2. Add the new card to the "holding pen"
       fragment.appendChild(col);
     });
 
-    // 3. Add all cards to the page at once (for better performance)
     partsDiv.appendChild(fragment);
   } catch (err) {
+    console.error(err);
     alert("Error fetching parts from server");
   }
 }
@@ -240,23 +228,20 @@ function renderCart() {
   cartDiv.innerHTML = "";
   let total = 0;
 
-  // 1. Create a "holding pen"
   const fragment = document.createDocumentFragment();
 
-  // Show message if cart is empty
   if (cart.length === 0) {
     cartDiv.innerHTML = `
-      <h4 class="dashboard-subtitle text-center">
-        Your cart is empty.
-      </h4>
+      <h4 class="dashboard-subtitle text-center">Your cart is empty.</h4>
     `;
     document.getElementById("totalPrice").innerText = "0.00";
     return;
   }
 
-  // 2. Build cart items
   cart.forEach((item, index) => {
-    total += item.price * item.quantity;
+    const priceAsNumber = parseFloat(item.price);
+    const subtotal = priceAsNumber * item.quantity;
+    total += subtotal;
 
     const col = document.createElement("div");
     col.className = "col-md-4 mb-4";
@@ -266,13 +251,11 @@ function renderCart() {
         <h5 class="shop-card-title">${item.name}</h5>
         <div class="mt-auto">
           <p class="shop-card-text shop-card-text-price mb-1">
-            Price: $${item.price.toFixed(2)}
+            Price: $${priceAsNumber.toFixed(2)}
           </p>
-          <p class="shop-card-text mb-1">
-            Quantity: ${item.quantity}
-          </p>
+          <p class="shop-card-text mb-1">Quantity: ${item.quantity}</p>
           <p class="shop-card-subtotal mb-3">
-            Subtotal: $${(item.price * item.quantity).toFixed(2)}
+            Subtotal: $${subtotal.toFixed(2)}
           </p>
           <button
             class="btn btn-glass btn-glass-danger w-100"
@@ -284,14 +267,10 @@ function renderCart() {
       </div>
     `;
 
-    // Add card to the fragment
     fragment.appendChild(col);
   });
 
-  // 3. Add all cards to the page at once
   cartDiv.appendChild(fragment);
-
-  // 4. Update total
   document.getElementById("totalPrice").innerText = total.toFixed(2);
 }
 
@@ -306,7 +285,7 @@ async function handleCheckout() {
 
   const items = cart.map((item) => ({
     part_id: item.id,
-    price: item.price,
+    price: parseFloat(item.price),
     quantity: item.quantity,
   }));
 
@@ -324,7 +303,8 @@ async function handleCheckout() {
       localStorage.setItem("cart", JSON.stringify(cart));
       renderCart();
     }
-  } catch {
+  } catch (err) {
+    console.error(err);
     alert("Error connecting to server");
   }
 }
@@ -341,24 +321,22 @@ async function loadAdminParts() {
     table.innerHTML = "";
 
     data.forEach((p) => {
+      const priceAsNumber = parseFloat(p.price);
       table.innerHTML += `
         <tr>
           <td>${p.id}</td>
           <td>${p.name}</td>
-          <td>$${p.price.toFixed(2)}</td>
+          <td>$${priceAsNumber.toFixed(2)}</td>
           <td>${p.quantity}</td>
           <td>
-            <button class="btn btn-sm btn-warning" onclick="editPart(${
-              p.id
-            }, '${p.name}', ${p.price}, ${p.quantity})">Edit</button>
-            <button class="btn btn-sm btn-danger" onclick="deletePart(${
-              p.id
-            })">Delete</button>
+            <button class="btn btn-sm btn-warning" onclick="editPart(${p.id}, '${p.name}', ${priceAsNumber}, ${p.quantity})">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deletePart(${p.id})">Delete</button>
           </td>
         </tr>
       `;
     });
-  } catch {
+  } catch (err) {
+    console.error(err);
     alert("Error fetching parts");
   }
 }
@@ -371,16 +349,18 @@ async function loadAdminOrders() {
     table.innerHTML = "";
 
     data.forEach((o) => {
+      const priceAsNumber = parseFloat(o.total_price);
       table.innerHTML += `
         <tr>
           <td>${o.id}</td>
           <td>${o.user_name || "N/A"} (ID: ${o.user_id})</td>
           <td>${o.quantity} x ${o.part_name || "N/A"}</td>
-          <td>$${o.total_price.toFixed(2)}</td>
+          <td>$${priceAsNumber.toFixed(2)}</td>
         </tr>
       `;
     });
-  } catch {
+  } catch (err) {
+    console.error(err);
     alert("Error fetching orders");
   }
 }
@@ -404,7 +384,8 @@ async function handleAddPart(e) {
       loadAdminParts();
       e.target.reset();
     }
-  } catch {
+  } catch (err) {
+    console.error(err);
     alert("Error adding part");
   }
 }
@@ -431,7 +412,8 @@ async function editPart(id, name, price, quantity) {
       alert("Part updated successfully!");
       loadAdminParts();
     }
-  } catch {
+  } catch (err) {
+    console.error(err);
     alert("Error updating part");
   }
 }
@@ -449,7 +431,8 @@ async function deletePart(id) {
       alert("Part deleted successfully!");
       loadAdminParts();
     }
-  } catch {
+  } catch (err) {
+    console.error(err);
     alert("Error deleting part");
   }
 }
