@@ -3,7 +3,7 @@
 // ===============================
 
 const express = require("express");
-const { Pool } = require("pg");
+const { Pool } = require("pg"); // PostgreSQL client
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
@@ -14,7 +14,30 @@ const PORT = 4000;
 
 // ---------- Middleware ----------
 app.use(bodyParser.json());
-app.use(cors());
+
+// ========================================
+// *** CORS FIX ***
+// Explicitly tell backend to trust frontend
+// ========================================
+const whitelist = [
+  "https://alfaraz-autostore.netlify.app", // Your new frontend
+  "https://cheerful-melba-ada1d9.netlify.app", // Your old frontend
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+
+app.use(cors(corsOptions));
+// ========================================
+// *** END OF CORS FIX ***
+// ========================================
 
 // ---------- Database ----------
 const pool = new Pool({
@@ -105,39 +128,32 @@ function isEmailValid(email) {
 // ===============================
 // FRONTEND SERVING
 // ===============================
-
 const frontendPath = path.join(__dirname, "../frontend");
 
-// Serve root route
 app.get("/", (req, res) => {
   res.sendFile(path.join(frontendPath, "login.html"));
 });
 
-// Serve static frontend files
 app.use(express.static(frontendPath));
 
 // ===============================
 // BACKEND ROUTES (Updated for PostgreSQL)
 // ===============================
 
-// ---- User Signup ----
+// ---- User signup ----
 app.post("/user/signup", async (req, res) => {
   try {
     const { name, email, password } = req.body;
-
     if (!name || !email || !password)
       return res.status(400).json({ error: "All fields required" });
-
     if (!isEmailValid(email))
       return res.status(400).json({ error: "Invalid email" });
-
     if (password.length < 8)
       return res
         .status(400)
         .json({ error: "Password must be at least 8 characters" });
 
     const hashed = await bcrypt.hash(password, 10);
-
     const result = await pool.query(
       "INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id",
       [name, email, hashed]
@@ -155,11 +171,10 @@ app.post("/user/signup", async (req, res) => {
   }
 });
 
-// ---- User Login ----
+// ---- User login ----
 app.post("/user/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-
     if (!email || !password)
       return res.status(400).json({ error: "Email and password required" });
 
@@ -179,11 +194,10 @@ app.post("/user/login", async (req, res) => {
   }
 });
 
-// ---- Admin Login ----
+// ---- Admin login ----
 app.post("/admin/login", async (req, res) => {
   try {
     const { username, password } = req.body;
-
     if (!username || !password)
       return res.status(400).json({ error: "Username and password required" });
 
@@ -217,13 +231,13 @@ app.get("/parts", async (req, res) => {
 app.post("/parts", async (req, res) => {
   try {
     const { name, price, quantity } = req.body;
-
     if (!name || price == null || quantity == null)
-      return res.status(400).json({ error: "name, price, and quantity required" });
+      return res
+        .status(400)
+        .json({ error: "name, price and quantity required" });
 
     const p = parseFloat(price),
       q = parseInt(quantity);
-
     if (isNaN(p) || isNaN(q) || p < 0 || q < 0)
       return res.status(400).json({ error: "Invalid price or quantity" });
 
@@ -231,7 +245,6 @@ app.post("/parts", async (req, res) => {
       "INSERT INTO spare_parts (name, price, quantity) VALUES ($1, $2, $3) RETURNING id",
       [name, p, q]
     );
-
     res.json({ message: "Part added", partId: result.rows[0].id });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -242,10 +255,8 @@ app.put("/parts/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const { name, price, quantity } = req.body;
-
     const p = parseFloat(price),
       q = parseInt(quantity);
-
     if (!name || isNaN(p) || isNaN(q))
       return res.status(400).json({ error: "Invalid data" });
 
@@ -268,10 +279,8 @@ app.delete("/parts/:id", async (req, res) => {
     const result = await pool.query("DELETE FROM spare_parts WHERE id=$1", [
       req.params.id,
     ]);
-
     if (result.rowCount === 0)
       return res.status(404).json({ error: "Part not found" });
-
     res.json({ message: "Part deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -281,12 +290,10 @@ app.delete("/parts/:id", async (req, res) => {
 // ---- Orders ----
 app.post("/cart/checkout", async (req, res) => {
   const { user_id, items } = req.body;
-
   if (!user_id || !Array.isArray(items) || items.length === 0)
     return res.status(400).json({ error: "user_id and items required" });
 
   const client = await pool.connect();
-
   try {
     let total = 0;
     await client.query("BEGIN");
