@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Alfaraz Auto Spare Parts</title>
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Animate.css -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <!-- ADDED 'auth-body' to match the theme -->
+  <body class="dashboard-body-wrapper">
+    <!-- Navbar -->
+    <!-- UPDATED to glass-nav -->
+    <nav class="navbar navbar-expand-lg glass-nav shadow">
+      <div class="container">
+        <a class="navbar-brand animate__animated animate__bounceIn" href="#">
+          Admin Panel
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="dashboard.html">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="logout()">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Admin Dashboard -->
+    <!-- ADDED dashboard-body class for flex layout -->
+    <div class="container py-5 dashboard-body">
+      <h2
+        class="text-center dashboard-title animate__animated animate__fadeInDown"
+      >
+        Welcome Admin - Manage Spare Parts
+      </h2>
+
+      <!-- Add Part Form -->
+      <!-- UPDATED to glass-card -->
+      <div class="glass-card p-4 mt-5 animate__animated animate__fadeInLeft">
+        <h4 class="mb-3">Add New Spare Part</h4>
+        <form id="addPartForm">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <!-- UPDATED to form-control-glass -->
+              <input
+                type="text"
+                id="partName"
+                class="form-control form-control-glass"
+                placeholder="Part Name"
+                required
+              />
+            </div>
+            <div class="col-md-4">
+              <!-- UPDATED to form-control-glass -->
+              <input
+                type="number"
+                id="partPrice"
+                class="form-control form-control-glass"
+                placeholder="Price"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="col-md-4">
+              <!-- UPDATED to form-control-glass -->
+              <input
+                type="number"
+                id="partQty"
+                class="form-control form-control-glass"
+                placeholder="Quantity"
+                required
+              />
+            </div>
+          </div>
+          <!-- UPDATED to btn-glass -->
+          <button
+            type="submit"
+            class="btn btn-glass btn-glass-success mt-4 w-100"
+          >
+            Add Part
+          </button>
+        </form>
+      </div>
+
+      <!-- Parts Table -->
+      <div class="mt-5">
+        <h4 class="dashboard-subtitle animate__animated animate__fadeInRight">
+          All Spare Parts
+        </h4>
+        <!-- UPDATED table to glass-table -->
+        <table class="table glass-table mt-3">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="partsTable"></tbody>
+        </table>
+      </div>
+
+      <!-- Orders Table -->
+      <div class="mt-5">
+        <h4 class="dashboard-subtitle animate__animated animate__fadeInRight">
+          User Orders
+        </h4>
+        <!-- UPDATED table to glass-table -->
+        <table class="table glass-table table-striped mt-3">
+          <!-- Added table-striped for effect -->
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>User</th>
+              <th>Details</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <!-- UPDATED footer style and text -->
+    <footer class="footer-glass text-center">
+      <p class="mb-0">
+        &copy; 2025 Alfaraz Auto Spare Parts |
+        <span class="text-warning">
+          Muhammad Ahsan Ali & Abdul Wasay Sial
+        </span>
+      </p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Main Script -->
+    <script src="script.js"></script>
+  </body>
+</html>

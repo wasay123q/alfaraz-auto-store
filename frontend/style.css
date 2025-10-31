@@ -1,0 +1,391 @@
+/* ===========================
+   PREVIOUS STYLES
+=========================== */
+body {
+  font-family: "Segoe UI", sans-serif;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* WATERMARK REMOVED: 
+   The 'body::after' pseudo-element has been deleted.
+*/
+
+.hero-section {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-section h1 {
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.hero-section p {
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.contact-section h2 {
+  font-weight: bold;
+}
+
+footer p {
+  font-size: 0.9rem;
+}
+
+/* ===========================
+   AUTH PAGE STYLES
+=========================== */
+
+/* Login & Signup Pages */
+.auth-body {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Dashboard, Shop & Cart Pages */
+.dashboard-body-wrapper {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ===========================
+   GLASSMORPHISM CARD
+=========================== */
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  padding: 2.5rem;
+  color: white;
+  width: 100%;
+  height: 100%; /* Makes cards in a row the same height */
+}
+
+/* Auth Form Width */
+.auth-body .glass-card {
+  max-width: 450px;
+}
+
+/* Dashboard Form Width */
+.dashboard-body-wrapper .glass-card {
+  max-width: none;
+}
+
+.glass-card h3,
+.glass-card h4 {
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* ===========================
+   FORM ELEMENTS
+=========================== */
+.form-control-glass {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+}
+
+.form-control-glass:focus {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: white;
+  box-shadow: none;
+}
+
+.form-control-glass::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.form-label-glass {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* ===========================
+   BUTTONS
+=========================== */
+.btn-glass {
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+/* Orange Primary Button */
+.btn-glass-primary {
+  background: #f39c12;
+  border: none;
+  color: white;
+}
+
+.btn-glass-primary:hover {
+  background: #e67e22;
+  box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Blue Warning Button */
+.btn-glass-warning {
+  background: #3498db;
+  border: none;
+  color: white;
+}
+
+.btn-glass-warning:hover {
+  background: #2980b9;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Green Success Button */
+.btn-glass-success {
+  background: #2ecc71;
+  border: none;
+  color: white;
+}
+
+.btn-glass-success:hover {
+  background: #27ae60;
+  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+  transform: translateY(-2px);
+}
+
+/* NEW: Red Danger Button (for "Remove from Cart") */
+.btn-glass-danger {
+  background: #e74c3c;
+  border: none;
+  color: white;
+}
+
+.btn-glass-danger:hover {
+  background: #c0392b;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+  transform: translateY(-2px);
+}
+
+/* ===========================
+   LINKS
+=========================== */
+.glass-link {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.glass-link:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+/* ===========================
+   TABS
+=========================== */
+.nav-tabs-glass {
+  border-bottom: none;
+}
+
+.nav-tabs-glass .nav-link {
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.nav-tabs-glass .nav-link.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-bottom: 2px solid #f39c12;
+  border-radius: 8px 8px 0 0;
+}
+
+/* ===========================
+   DASHBOARD STYLES
+=========================== */
+.dashboard-body {
+  flex-grow: 1; /* Pushes footer down */
+}
+
+/* Glass Navbar */
+.glass-nav {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+}
+
+.glass-nav .navbar-brand,
+.glass-nav .nav-link {
+  color: white !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
+}
+
+.glass-nav .nav-link.active,
+.glass-nav .navbar-brand:hover,
+.glass-nav .nav-link:hover {
+  color: #f39c12 !important;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Dashboard Titles */
+.dashboard-title {
+  color: white;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-subtitle {
+  color: white;
+  font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* ===========================
+   GLASS TABLE
+=========================== */
+.glass-table {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  color: white;
+  overflow: hidden;
+}
+
+.glass-table thead {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  color: #f39c12;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-table th {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.glass-table th,
+.glass-table td {
+  padding: 1rem 1.25rem;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: none;
+}
+
+.glass-table tbody tr {
+  transition: background-color 0.3s ease;
+}
+
+.glass-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.glass-table .btn-warning {
+  background-color: #f39c12;
+  border: none;
+}
+
+.glass-table .btn-danger {
+  background-color: #e74c3c;
+  border: none;
+}
+
+/* Bootstrap Stripe Override */
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* ===========================
+   DASHBOARD FOOTER
+=========================== */
+.footer-glass {
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  color: rgba(255, 255, 255, 0.8);
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  margin-top: auto; /* Pushes footer to bottom */
+}
+
+/* ===========================
+   NEW: SHOP & CART STYLES
+=========================== */
+.shop-card-title {
+  color: #f39c12; /* Orange highlight */
+  font-weight: 700;
+  font-size: 1.25rem;
+  min-height: 40px; /* Ensures titles align */
+}
+
+.shop-card-text {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: white; /* Ensure text is white */
+}
+
+.shop-card-text-price {
+  color: #2ecc71; /* Green for price */
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.shop-card-text-stock {
+  color: #e67e22; /* Warning color for stock */
+  font-weight: 600;
+}
+
+.shop-card-subtotal {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: white;
+}
+
+/* Cart Total Box */
+.cart-total-box {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  padding: 2rem;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cart-total-box h4 {
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+#parts,
+#cartItems {
+  /* Reserve vertical space to keep footer at bottom */
+  min-height: 60vh;
+}
